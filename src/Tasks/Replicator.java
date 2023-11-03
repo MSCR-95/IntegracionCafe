@@ -16,24 +16,15 @@ import org.w3c.dom.Document;
  */
 
 public class Replicator extends Task {
-    
-    public Replicator(Slot entrada, int numSalidas) {
-        //Creamos una lista inmutable con un solo elemento, entrada
-        super(Collections.singletonList(entrada), generarSalidas(entrada, numSalidas));
+    public Replicator(int numSalidas) {
+        super(1, numSalidas);  // Una entrada y n salidas
     }
 
-    private static List<Slot> generarSalidas(Slot entrada, int numSalidas) {
-        
-        List<Slot> salidas = new ArrayList<>();
-        
-        for (int i = 0; i < numSalidas; i++) {
-         
-            Slot copiaEntrada = new Slot();         //Copiamos la entrada para crear las salidas
-            for (Document doc : entrada.getListaDoc()) {
-                copiaEntrada.introducirDoc(doc);    //Copiamos los documentos de la entrada a la salida
-            }
-            salidas.add(copiaEntrada);  //Copiamos la entrada por cada salida que tengamos
+    public void replicate() {
+        // Distribuir la entrada a todas las salidas
+        Slot entrada = getEntrada(0);  // Obtener la entrada
+        for (int i = 0; i < salidas.length; i++) {
+            setSalida(i, entrada);  // Copiar la entrada en cada salida
         }
-        return salidas;
     }
 }
